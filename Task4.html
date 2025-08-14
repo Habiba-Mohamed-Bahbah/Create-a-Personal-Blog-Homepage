@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Personal Blog</title>
+  <style>
+    body {
+      background-color: #fff; /* خلفية الصفحة */
+      color: #4b2e2b; /* لون النصوص في باقي الصفحة */
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      text-align: center;
+      background-color: #4b2e2b; /* بني غامق للهيدر */
+      padding: 15px;
+      border-radius: 0 0 8px 8px;
+    }
+
+    header h1 {
+      color: #fff; /* نص أبيض داخل الهيدر */
+      margin: 0;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    select, input {
+      padding: 5px;
+      border: 1px solid #4b2e2b;
+      border-radius: 5px;
+      color: #4b2e2b;
+      background-color: #fff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+      padding: 0 20px 20px;
+    }
+
+    .card {
+      background-color: #fdfaf6;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      color: #4b2e2b;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .date {
+      font-size: 12px;
+      color: #4b2e2b;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>My Personal Blog</h1>
+  </header>
+
+  <div class="controls">
+    <select id="categoryFilter">
+      <option>All</option>
+      <option>Tech</option>
+      <option>Travel</option>
+      <option>Food</option>
+    </select>
+    <input type="text" id="searchInput" placeholder="Search by title..." />
+  </div>
+
+  <div class="grid" id="postsGrid"></div>
+
+  <script>
+    const postsData = [
+      { id: 1, title: "Exploring JavaScript", category: "Tech", date: "2025-08-01", description: "Learn about JS basics.", image:"https://tse2.mm.bing.net/th/id/OIP.XgBwhpZKay8VxPf78LDcdgHaEK?rs=1&pid=ImgDetMain&o=7&rm=3" },
+      { id: 2, title: "Trip to Switzerland", category: "Travel", date: "2025-07-20", description: "Beautiful places in Italy.", image: "https://tse1.mm.bing.net/th/id/OIP.z8zdgCj8xP6s-4Nn52H1rQHaEc?rs=1&pid=ImgDetMain&o=7&rm=3" },
+      { id: 3, title: "Best Pasta Recipes", category: "Food", date: "2025-07-15", description: "Delicious pasta recipes.", image: "https://tse4.mm.bing.net/th/id/OIP.McRdkDxCHcfV1W6FpV6cngHaJQ?rs=1&pid=ImgDetMain&o=7&rm=3" },
+      { id: 4, title: "React Hooks Guide", category: "Tech", date: "2025-06-25", description: "Understanding React Hooks.", image: "https://tse3.mm.bing.net/th/id/OIP.1cLNK93SNamP4MLgedCtBQHaDt?rs=1&pid=ImgDetMain&o=7&rm=3" },
+    ];
+
+    const postsPerPage = 3;
+    const categoryFilter = document.getElementById("categoryFilter");
+    const searchInput = document.getElementById("searchInput");
+    const postsGrid = document.getElementById("postsGrid");
+
+    function renderPosts() {
+      const category = categoryFilter.value;
+      const search = searchInput.value.toLowerCase();
+
+      const filteredPosts = postsData.filter(post =>
+        (category === "All" || post.category === category) &&
+        post.title.toLowerCase().includes(search)
+      );
+
+      postsGrid.innerHTML = "";
+      filteredPosts.slice(0, postsPerPage).forEach(post => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${post.image}" alt="${post.title}">
+          <h3>${post.title}</h3>
+          <p class="date">${post.date}</p>
+          <p>${post.description}</p>
+        `;
+        postsGrid.appendChild(card);
+      });
+    }
+
+    categoryFilter.addEventListener("change", renderPosts);
+    searchInput.addEventListener("input", renderPosts);
+
+    renderPosts();
+  </script>
+
+</body>
+</html>
